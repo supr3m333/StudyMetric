@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AcadTrack helps students track marks, study time, goals, and Pomodoro sessions.">
+    <title>AcadTrack — Student Academic Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a class="brand" href="#dashboard" data-go-to="dashboard" aria-label="AcadTrack dashboard">
+                <span class="brand-mark">A</span>
+                <span>AcadTrack</span>
+            </a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <button class="nav-link active" data-section="dashboard">
+                    <span class="nav-icon">▦</span> Dashboard
+                </button>
+                <button class="nav-link" data-section="subjects">
+                    <span class="nav-icon">▤</span> Subjects
+                </button>
+                <button class="nav-link" data-section="study">
+                    <span class="nav-icon">◷</span> Study Timer
+                </button>
+                <button class="nav-link" data-section="goals">
+                    <span class="nav-icon">◎</span> Goals
+                </button>
+            </nav>
+
+            <div class="sidebar-tip">
+                <strong>Study tip</strong>
+                <p>Small, focused sessions are easier to repeat every day.</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">STUDENT WORKSPACE</p>
+                    <h1 id="page-title">Dashboard</h1>
+                </div>
+                <p id="current-date" class="current-date"></p>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="page-section active-section">
+                <div class="welcome-panel">
+                    <div>
+                        <p class="eyebrow">ACADEMIC OVERVIEW</p>
+                        <h2>Keep your semester on track.</h2>
+                        <p>Review your progress, record focused study time, and work toward one goal at a time.</p>
+                    </div>
+                    <button class="primary-button" data-go-to="subjects">+ Add a subject</button>
+                </div>
+
+                <div class="stat-grid" aria-label="Academic summary">
+                    <article class="stat-item">
+                        <span class="stat-icon blue">▤</span>
+                        <div><p>Total subjects</p><strong id="total-subjects">0</strong></div>
+                    </article>
+                    <article class="stat-item">
+                        <span class="stat-icon green">%</span>
+                        <div><p>Average score</p><strong id="average-score">0%</strong></div>
+                    </article>
+                    <article class="stat-item">
+                        <span class="stat-icon amber">◷</span>
+                        <div><p>Study time</p><strong id="total-study-time">0h</strong></div>
+                    </article>
+                    <article class="stat-item">
+                        <span class="stat-icon purple">✓</span>
+                        <div><p>Pomodoro sessions</p><strong id="completed-sessions">0</strong></div>
+                    </article>
+                </div>
+
+                <div class="dashboard-grid">
+                    <article class="panel performance-panel">
+                        <div class="panel-heading">
+                            <div><p class="eyebrow">CURRENT RESULTS</p><h2>Subject performance</h2></div>
+                            <button class="text-button" data-go-to="subjects">Manage subjects →</button>
+                        </div>
+                        <div id="performance-chart" class="bar-chart"></div>
+                    </article>
+
+                    <article class="panel activity-panel">
+                        <div class="panel-heading">
+                            <div><p class="eyebrow">LATEST UPDATES</p><h2>Recent activity</h2></div>
+                        </div>
+                        <div id="recent-activity" class="activity-list"></div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Subjects Section -->
+            <section id="subjects" class="page-section">
+                <div class="section-grid">
+                    <article class="panel">
+                        <div class="panel-heading"><div><p class="eyebrow">NEW RECORD</p><h2>Add a subject</h2></div></div>
+                        <form id="subject-form" class="form-grid">
+                            <label class="full-width">Subject name
+                                <input id="subject-name" type="text" placeholder="e.g. Object-Oriented Programming" required>
+                            </label>
+                            <label>Total marks
+                                <input id="total-marks" type="number" min="1" placeholder="50" required>
+                            </label>
+                            <label>Obtained marks
+                                <input id="obtained-marks" type="number" min="0" placeholder="38" required>
+                            </label>
+                            <p id="subject-error" class="form-message full-width" role="alert"></p>
+                            <button class="primary-button full-width" type="submit">Add subject</button>
+                        </form>
+                    </article>
+
+                    <article class="panel calculator-panel">
+                        <div class="panel-heading"><div><p class="eyebrow">QUICK CALCULATOR</p><h2>Required marks</h2></div></div>
+                        <form id="marks-calculator" class="form-grid">
+                            <label>Current marks
+                                <input id="current-marks" type="number" min="0" placeholder="35" required>
+                            </label>
+                            <label>Total marks
+                                <input id="calculator-total" type="number" min="1" placeholder="50" required>
+                            </label>
+                            <label class="full-width">Target percentage
+                                <input id="target-percentage" type="number" min="1" max="100" placeholder="80" required>
+                            </label>
+                            <button class="secondary-button full-width" type="submit">Calculate required marks</button>
+                        </form>
+                        <div id="calculator-result" class="result-box" aria-live="polite">Enter your marks to calculate a target.</div>
+                    </article>
+                </div>
+
+                <article class="panel table-panel">
+                    <div class="panel-heading"><div><p class="eyebrow">MARKS REGISTER</p><h2>Your subjects</h2></div></div>
+                    <div class="table-scroll">
+                        <table>
+                            <thead><tr><th>Subject</th><th>Marks</th><th>Percentage</th><th>Expected grade</th><th><span class="visually-hidden">Actions</span></th></tr></thead>
+                            <tbody id="subject-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="subject-empty-state" class="empty-state">
+                        <span>▤</span><h3>No subjects yet</h3><p>Add your first subject using the form above.</p>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Study Timer Section -->
+            <section id="study" class="page-section">
+                <div class="study-grid">
+                    <article class="panel timer-panel">
+                        <p class="eyebrow">FOCUS SESSION</p>
+                        <h2>Pomodoro timer</h2>
+                        <p class="muted-text">One focused session, then a well-earned break.</p>
+                        <div id="timer-display" class="timer-display" aria-live="polite">25:00</div>
+                        <div class="timer-controls">
+                            <button id="start-timer" class="primary-button">Start</button>
+                            <button id="pause-timer" class="secondary-button">Pause</button>
+                            <button id="reset-timer" class="secondary-button">Reset</button>
+                        </div>
+                        <p class="session-note">Completed sessions: <strong id="timer-session-count">0</strong></p>
+                    </article>
+
+                    <article class="panel">
+                        <div class="panel-heading"><div><p class="eyebrow">STUDY LOG</p><h2>Add study time</h2></div></div>
+                        <form id="study-form" class="form-grid">
+                            <label class="full-width">Subject
+                                <select id="study-subject" required><option value="">Choose a subject</option></select>
+                            </label>
+                            <label class="full-width">Study duration (minutes)
+                                <input id="study-duration" type="number" min="1" placeholder="60" required>
+                            </label>
+                            <p id="study-error" class="form-message full-width" role="alert"></p>
+                            <button class="primary-button full-width" type="submit">Add study session</button>
+                        </form>
+                    </article>
+                </div>
+
+                <article class="panel sessions-panel">
+                    <div class="panel-heading"><div><p class="eyebrow">TODAY</p><h2>Study sessions</h2></div></div>
+                    <div id="today-sessions" class="session-list"></div>
+                </article>
+            </section>
+
+            <!-- Goals Section -->
+            <section id="goals" class="page-section">
+                <div class="section-grid goals-layout">
+                    <article class="panel">
+                        <div class="panel-heading"><div><p class="eyebrow">NEW TARGET</p><h2>Set a study goal</h2></div></div>
+                        <form id="goal-form" class="form-grid">
+                            <label class="full-width">Subject
+                                <select id="goal-subject" required><option value="">Choose a subject</option></select>
+                            </label>
+                            <label class="full-width">Target percentage
+                                <input id="goal-target" type="number" min="1" max="100" placeholder="85" required>
+                            </label>
+                            <p id="goal-error" class="form-message full-width" role="alert"></p>
+                            <button class="primary-button full-width" type="submit">Set goal</button>
+                        </form>
+                    </article>
+
+                    <article class="panel goals-panel">
+                        <div class="panel-heading"><div><p class="eyebrow">PROGRESS</p><h2>Your goals</h2></div></div>
+                        <div id="goal-list" class="goal-list"></div>
+                    </article>
+                </div>
+
+                <div class="weekly-checkin-grid">
+                    <article class="panel">
+                        <div class="panel-heading">
+                            <div><p class="eyebrow">WEEKLY CHECK-IN</p><h2>Review your study week</h2></div>
+                        </div>
+                        <form id="weekly-checkin-form" class="form-grid">
+                            <label class="full-width">Weekly study hours
+                                <input id="weekly-study-hours" type="number" min="0" max="168" step="0.5" placeholder="e.g. 12.5" required>
+                                <span class="field-help">Include classes, revision, assignments, and independent study.</span>
+                            </label>
+                            <label class="full-width">Attendance percentage
+                                <input id="weekly-attendance" type="number" min="0" max="100" step="0.1" placeholder="e.g. 90" required>
+                                <span class="field-help">Enter the percentage of scheduled classes you attended.</span>
+                            </label>
+                            <label class="full-width">Class performance rating (1–10)
+                                <input id="class-performance" type="number" min="1" max="10" step="1" placeholder="e.g. 8" required>
+                                <span class="field-help">Think about assignment completion, lab reports, classwork, participation, preparation, and focus during class. A 1 means you need major improvement; 10 means you performed consistently well in all areas.</span>
+                            </label>
+                            <p id="checkin-error" class="form-message full-width" role="alert"></p>
+                            <button class="primary-button full-width" type="submit">Save weekly check-in</button>
+                        </form>
+                    </article>
+
+                    <article class="panel weekly-summary-panel">
+                        <div class="panel-heading">
+                            <div><p class="eyebrow">LATEST REVIEW</p><h2>This week's summary</h2></div>
+                        </div>
+                        <div id="weekly-checkin-summary"></div>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
