@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | StudyMetric</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body class="login-page">
+    <div class="card login-card">
+        <h1>StudyMetric</h1>
+        <div class="login-tabs">
+            <button id="show-login" type="button">Login</button>
+            <button id="show-register" type="button" class="secondary">Student Register</button>
+        </div>
+
+        <form id="login-form" method="post" action="index.php">
+            <h2>Login</h2>
+            <label>Username<input type="text" name="username" required autofocus></label>
+            <label>Password<input type="password" name="password" required></label>
+            <p id="login-error" class="error hidden">Incorrect username or password.</p>
+            <p id="register-success" class="success hidden">Account created. You can now log in.</p>
+            <button type="submit" name="login">Login</button>
+        </form>
+
+        <form id="register-form" method="post" action="index.php" class="hidden">
+            <h2>Student Registration</h2>
+            <label>Username<input name="username" required></label>
+            <label>Password<input type="password" name="password" minlength="6" required></label>
+            <label>Full Name<input name="name" required></label>
+            <label>Email<input type="email" name="email" required></label>
+            <p id="register-error" class="error hidden">That account name is already in use.</p>
+            <button type="submit" name="register">Create Account</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
